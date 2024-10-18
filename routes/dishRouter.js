@@ -17,7 +17,7 @@ dishRouter
           res.setHeader("Content-Type", "application/json");
           res.json(dishes);
         },
-        (err) => next(errr)
+        (err) => next(err)
       )
       .catch((err) => next(err));
   })
