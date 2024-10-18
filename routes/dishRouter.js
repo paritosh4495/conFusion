@@ -30,7 +30,7 @@ dishRouter
           res.setHeader("Content-Type", "application/json");
           res.json(dish);
         },
-        (err) => next(errr)
+        (err) => next(err)
       )
       .catch((err) => next(err));
   })
