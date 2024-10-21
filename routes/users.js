@@ -20,11 +20,26 @@ router.post('/signup', (req,res, next)=>{
       res.setHeader('Content-Type','application/json');
       res.json({err : err});
     }else{
-      passport.authenticate('local')(req,res,()=>{
-        res.setHeader('Content-Type','application/json');
-        res.statusCode = 200;
-        res.json({success : true , status : 'Registration Successful'});
+      if(req.body.firstname){
+        user.firstname = req.body.firstname;
+      }
+      if(req.body.lastname){
+        user.lastname = req.body.lastname;
+      }
+
+      /// Transition to new version : :
+      user.save().then((user) => {
+        passport.authenticate('local')(req, res, () => {
+          res.setHeader('Content-Type', 'application/json');
+          res.statusCode = 200;
+          res.json({ success: true, status: 'Registration Successful' });
+        });
+      }).catch((err) => {
+        res.statusCode = 500;
+        res.setHeader('Content-Type', 'application/json');
+        res.json({ err: err });
       });
+   
       }
   });
 });
