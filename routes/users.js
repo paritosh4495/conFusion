@@ -8,8 +8,16 @@ var authenticate = require('../authenticate');
 var router = express.Router();
 router.use(bodyParser.json());
 
-router.get('/', function(req,res,next){
-  res.send('respond with a resourrce');
+router.get('/',authenticate.verifyUser, authenticate.verifyAdmin, function(req,res,next){
+  User.find({})
+  .then( (users) => {
+      res.status = 200;
+      res.setHeader("Content-Type", "application/json");
+      res.json(users);
+    },
+    (err) => next(err)
+  )
+  .catch((err) => next(err));
 });
 
 router.post('/signup', (req,res, next)=>{
